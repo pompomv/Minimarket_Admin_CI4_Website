@@ -1,0 +1,37 @@
+# CodeIgniter 4 .gitignore
+
+# Environment file (contains DB credentials, app keys)
+.env
+
+# Composer vendor folder (install via: composer install)
+vendor/
+
+# CI4 writable folder (logs, cache, sessions, uploads)
+writable/
+
+# CI4 build cache
+build/
+
+# VS Code workspace settings
+.vscode/
+
+# IDE & OS files
+.idea/
+*.DS_Store
+Thumbs.db
+
+# PHP temporary / scratch files
+encrypt_password.php
+update_password.php
+preload.php
+
+# Log files
+*.log
+jmeter.log
+
+# JMeter test artifacts
+hasil_test_jmeter.jtl
+JMeter_Load_Test.jmx
+
+# Misc
+tests_list.txt

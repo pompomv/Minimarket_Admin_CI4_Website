@@ -8,16 +8,15 @@ class TransactionModel extends Model
 {
     protected $table = 'transactions';
     protected $primaryKey = 'id';
-    protected $useAutoIncrement = false; // VARCHAR UUID PK
+    protected $useAutoIncrement = true; // int AUTO_INCREMENT
     protected $returnType = 'array';
     protected $allowedFields = [
-        'id',
+        'invoice_no',
         'transaction_date',
         'customer_id',
         'user_id',
         'total_amount',
         'payment_method',
-        'bayar',
         'status',
         'notes',
         'created_at',

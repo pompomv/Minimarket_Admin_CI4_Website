@@ -116,23 +116,35 @@ class TransactionApiController extends BaseController
         $payload = $this->request->jwtPayload;
         $userId  = (int) ($payload->user_id ?? 0);
 
-        helper('uuid');
         $db = \Config\Database::connect();
         $db->transStart();
 
-        $txId = generate_uuid();
+        // Generate unique invoice number
+        $invoiceNo = 'INV-' . date('Ymd') . '-' . strtoupper(substr(uniqid(), -6));
 
         $this->model->insert([
-            'id'               => $txId,
+            'invoice_no'       => $invoiceNo,
             'transaction_date' => date('Y-m-d H:i:s'),
             'customer_id'      => $customerId ?: null,
             'user_id'          => $userId,
             'status'           => 'PENDING',
             'payment_method'   => $paymentMethod,
-            'bayar'            => $bayar,
             'notes'            => $notes,
             'total_amount'     => 0,
         ]);
+
+        $txId = $this->model->getInsertID(); // auto-increment int
+
+        if (!$txId) {
+            $db->transRollback();
+            $dbError = $db->error();
+            return $this->response
+                ->setStatusCode(500)
+                ->setJSON([
+                    'status'  => 'error',
+                    'message' => 'DB error: ' . ($dbError['message'] ?? 'Insert transaction failed (id=0)'),
+                ]);
+        }
 
         // Process each item
         foreach ($items as $item) {
@@ -161,7 +173,7 @@ class TransactionApiController extends BaseController
                 'transaction_id' => $txId,
                 'product_id'     => $productId,
                 'quantity'       => $qty,
-                'unit_price'     => $unitPrice,
+                'price'          => $unitPrice,
                 'subtotal'       => $subtotal,
             ]);
 
@@ -169,7 +181,7 @@ class TransactionApiController extends BaseController
         }
 
         // Recalculate total
-        $this->model->recalculateTotal($txId);
+        $this->model->recalculateTotal((string) $txId);
         $this->model->update($txId, ['status' => 'COMPLETED']);
 
         $db->transComplete();
@@ -182,7 +194,7 @@ class TransactionApiController extends BaseController
 
         // Fetch the newly created transaction
         $newTransaction = $this->model->find($txId);
-        $change         = $bayar - (float) $newTransaction['total_amount'];
+        $change         = $bayar - (float) ($newTransaction['total_amount'] ?? 0);
 
         return $this->response
             ->setStatusCode(201)
@@ -191,11 +203,13 @@ class TransactionApiController extends BaseController
                 'message' => 'Transaction saved successfully.',
                 'data'    => [
                     'id'           => $txId,
+                    'invoice_no'   => $invoiceNo,
                     'total_amount' => $newTransaction['total_amount'],
                     'amount_paid'  => $bayar,
-                    'change'       => $change,
+                    'change'       => max(0, $change),
                     'status'       => 'COMPLETED',
                 ],
             ]);
+
     }
 }

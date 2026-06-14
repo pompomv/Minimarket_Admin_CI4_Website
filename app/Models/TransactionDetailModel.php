@@ -14,7 +14,7 @@ class TransactionDetailModel extends Model
         'transaction_id',
         'product_id',
         'quantity',
-        'unit_price',
+        'price',
         'subtotal'
     ];
 

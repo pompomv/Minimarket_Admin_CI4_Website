@@ -8,9 +8,9 @@ class CustomerModel extends Model
 {
     protected $table = 'customers';
     protected $primaryKey = 'id';
-    protected $useAutoIncrement = false; // VARCHAR UUID PK
+    protected $useAutoIncrement = true; // int AUTO_INCREMENT
     protected $returnType = 'array';
-    protected $allowedFields = ['id', 'name', 'phone', 'email', 'address', 'created_at', 'updated_at'];
+    protected $allowedFields = ['name', 'phone', 'email', 'address', 'created_at', 'updated_at'];
 
     protected $useTimestamps = true;
     protected $dateFormat = 'datetime';
@@ -18,8 +18,8 @@ class CustomerModel extends Model
     protected $updatedField = 'updated_at';
 
     protected $validationRules = [
-        'name' => 'required|max_length[100]',
+        'name'  => 'required|max_length[200]',
         'phone' => 'permit_empty|max_length[20]',
-        'email' => 'permit_empty|valid_email|max_length[100]',
+        'email' => 'permit_empty|valid_email|max_length[255]',
     ];
 }

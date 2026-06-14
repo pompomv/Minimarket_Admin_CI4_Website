@@ -67,22 +67,31 @@ class DashboardApiController extends BaseController
             ->orderBy('t.transaction_date', 'DESC')
             ->limit(5);
 
-        if ($role !== 'admin') {
-            $recentBuilder->where('t.user_id', $userId);
-        }
+        $transaksiTerbaru = $recentBuilder->get()->getResultArray();
 
-        $recentTransactions = $recentBuilder->get()->getResultArray();
+        // Top 5 best-selling products (table: transaction_details)
+        $produkTerlaris = $db->table('transaction_details td')
+            ->select('p.name, SUM(td.quantity) AS terjual')
+            ->join('products p', 'p.id = td.product_id', 'left')
+            ->join('transactions t', 't.id = td.transaction_id', 'left')
+            ->where('t.status', 'COMPLETED')
+            ->groupBy('td.product_id')
+            ->orderBy('terjual', 'DESC')
+            ->limit(5)
+            ->get()
+            ->getResultArray();
 
         return $this->response->setJSON([
             'status' => 'success',
             'data'   => [
-                'sales_today'         => $todaySales,
-                'transactions_today'  => $todayCount,
-                'sales_this_month'    => $monthSales,
-                'total_products'      => $totalProducts,
-                'low_stock'           => $lowStock,
-                'total_customers'     => $totalCustomers,
-                'recent_transactions' => $recentTransactions,
+                'sales_today'        => $todaySales,
+                'transactions_today' => $todayCount,
+                'sales_this_month'   => $monthSales,
+                'total_products'     => $totalProducts,
+                'low_stock'          => $lowStock,
+                'total_customers'    => $totalCustomers,
+                'transaksi_terbaru'  => $transaksiTerbaru,
+                'produk_terlaris'    => $produkTerlaris,
             ],
         ]);
     }

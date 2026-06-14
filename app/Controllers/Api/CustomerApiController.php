@@ -17,7 +17,6 @@ class CustomerApiController extends BaseController
     /**
      * GET /api/customers
      * Query: ?search=customer_name
-     * Used by the cashier to look up registered customers by name.
      */
     public function index()
     {
@@ -29,7 +28,7 @@ class CustomerApiController extends BaseController
             $builder->like('name', $search);
         }
 
-        $customers = $builder->findAll(50); // max 50 results
+        $customers = $builder->findAll(100);
 
         return $this->response->setJSON([
             'status' => 'success',
@@ -54,5 +53,36 @@ class CustomerApiController extends BaseController
             'status' => 'success',
             'data'   => $customer,
         ]);
+    }
+
+    /**
+     * POST /api/customers
+     * Body: { "name": "...", "phone": "...", "address": "...", "email": "..." }
+     */
+    public function store()
+    {
+        $body = $this->request->getJSON(true);
+        $name = trim($body['name'] ?? '');
+
+        if (empty($name)) {
+            return $this->response
+                ->setStatusCode(400)
+                ->setJSON(['status' => 'error', 'message' => 'Name is required.']);
+        }
+
+        $data = [
+            'name'    => $name,
+            'phone'   => $body['phone']   ?? null,
+            'address' => $body['address'] ?? null,
+            'email'   => $body['email']   ?? null,
+        ];
+
+        $this->model->insert($data);
+        $newId    = $this->model->getInsertID();
+        $customer = $this->model->find($newId);
+
+        return $this->response
+            ->setStatusCode(201)
+            ->setJSON(['status' => 'success', 'data' => $customer]);
     }
 }

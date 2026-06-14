@@ -101,7 +101,8 @@ $routes->group('api', ['filter' => 'jwt'], function ($routes) {
     $routes->post('transactions', 'Api\TransactionApiController::store');
     $routes->get('transactions/(:any)', 'Api\TransactionApiController::show/$1');
 
-    // Customers (name lookup)
+    // Customers (name lookup + create)
     $routes->get('customers', 'Api\CustomerApiController::index');
+    $routes->post('customers', 'Api\CustomerApiController::store');
     $routes->get('customers/(:num)', 'Api\CustomerApiController::show/$1');
 });

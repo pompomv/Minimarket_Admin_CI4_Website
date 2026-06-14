@@ -110,7 +110,7 @@
                         <?php foreach ($lowStock as $p): ?>
                         <tr>
                             <td><?= esc($p['name']) ?></td>
-                            <td><span class="badge badge-<?= strtolower($p['product_type']) ?>"><?= $p['product_type'] ?></span></td>
+                            <td><span class="badge badge-<?= strtolower($p['product_type'] ?? $p['category'] ?? 'other') ?>"><?= esc($p['product_type'] ?? $p['category'] ?? 'N/A') ?></span></td>
                             <td>
                                 <span class="fw-bold <?= $p['stock'] == 0 ? 'text-danger' : 'text-warning' ?>"><?= $p['stock'] ?></span>
                             </td>

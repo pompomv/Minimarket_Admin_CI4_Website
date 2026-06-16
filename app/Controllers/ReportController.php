@@ -38,7 +38,7 @@ class ReportController extends BaseController
 
         // Top products in range
         $topProducts = $this->model->db->table('transaction_details td')
-            ->select('p.name AS product_name, p.product_type, SUM(td.quantity) AS total_qty, SUM(td.subtotal) AS total_revenue')
+            ->select('p.name AS product_name, SUM(td.quantity) AS total_qty, SUM(td.subtotal) AS total_revenue')
             ->join('products p', 'p.id = td.product_id')
             ->join('transactions t', 't.id = td.transaction_id')
             ->where('t.status', 'COMPLETED')
@@ -50,7 +50,7 @@ class ReportController extends BaseController
             ->get()->getResultArray();
 
         return view('reports/index', [
-            'title' => 'Laporan Penjualan',
+            'title' => 'Sales Report',
             'rows' => $rows,
             'totalRevenue' => $totalRevenue,
             'byDate' => $byDate,

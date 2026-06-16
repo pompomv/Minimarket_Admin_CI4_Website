@@ -8,7 +8,7 @@ class TransactionModel extends Model
 {
     protected $table = 'transactions';
     protected $primaryKey = 'id';
-    protected $useAutoIncrement = true; // int AUTO_INCREMENT
+    protected $useAutoIncrement = true;
     protected $returnType = 'array';
     protected $allowedFields = [
         'invoice_no',

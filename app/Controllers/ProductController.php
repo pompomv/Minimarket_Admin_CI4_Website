@@ -19,7 +19,7 @@ class ProductController extends BaseController
     public function index()
     {
         return view('products/list', [
-            'title' => 'Daftar Produk',
+            'title' => 'Product List',
             'products' => $this->model->withSupplier(),
         ]);
     }
@@ -27,9 +27,8 @@ class ProductController extends BaseController
     public function add()
     {
         return view('products/add', [
-            'title' => 'Tambah Produk',
+            'title' => 'Add Product',
             'suppliers' => $this->supplierModel->findAll(),
-            'types' => ['FOOD', 'BEVERAGE', 'ELECTRONIC'],
             'validation' => \Config\Services::validation(),
         ]);
     }
@@ -37,7 +36,6 @@ class ProductController extends BaseController
     public function store()
     {
         $rules = [
-            'product_type' => 'required|in_list[FOOD,BEVERAGE,ELECTRONIC]',
             'name' => 'required|max_length[100]',
             'price' => 'required|decimal',
             'stock' => 'required|integer',
@@ -48,7 +46,6 @@ class ProductController extends BaseController
         }
 
         $this->model->insert([
-            'product_type' => $this->request->getPost('product_type'),
             'name' => $this->request->getPost('name'),
             'price' => $this->request->getPost('price'),
             'stock' => $this->request->getPost('stock'),
@@ -58,21 +55,20 @@ class ProductController extends BaseController
             'category' => $this->request->getPost('category'),
         ]);
 
-        return $this->withSuccess('/products', 'Produk berhasil ditambahkan!');
+        return $this->withSuccess('/products', 'Product added successfully!');
     }
 
     public function edit(int $id)
     {
         $product = $this->model->find($id);
         if (!$product) {
-            return $this->withError('/products', 'Produk tidak ditemukan.');
+            return $this->withError('/products', 'Product not found.');
         }
 
         return view('products/edit', [
-            'title' => 'Edit Produk',
+            'title' => 'Edit Product',
             'product' => $product,
             'suppliers' => $this->supplierModel->findAll(),
-            'types' => ['FOOD', 'BEVERAGE', 'ELECTRONIC'],
             'validation' => \Config\Services::validation(),
         ]);
     }
@@ -80,7 +76,6 @@ class ProductController extends BaseController
     public function update(int $id)
     {
         $rules = [
-            'product_type' => 'required|in_list[FOOD,BEVERAGE,ELECTRONIC]',
             'name' => 'required|max_length[100]',
             'price' => 'required|decimal',
             'stock' => 'required|integer',
@@ -91,7 +86,6 @@ class ProductController extends BaseController
         }
 
         $this->model->update($id, [
-            'product_type' => $this->request->getPost('product_type'),
             'name' => $this->request->getPost('name'),
             'price' => $this->request->getPost('price'),
             'stock' => $this->request->getPost('stock'),
@@ -101,12 +95,12 @@ class ProductController extends BaseController
             'category' => $this->request->getPost('category'),
         ]);
 
-        return $this->withSuccess('/products', 'Produk berhasil diperbarui!');
+        return $this->withSuccess('/products', 'Product updated successfully!');
     }
 
     public function destroy(int $id)
     {
         $this->model->delete($id);
-        return $this->withSuccess('/products', 'Produk berhasil dihapus.');
+        return $this->withSuccess('/products', 'Product deleted successfully.');
     }
 }

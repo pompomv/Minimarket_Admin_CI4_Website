@@ -14,7 +14,7 @@ class DashboardController extends BaseController
         $today = date('Y-m-d');
         $role = session()->get('role');
 
-        // Penjualan hari ini (semua kasir)
+        // Today's sales (all cashiers)
         $todayTx = $transactionModel->db->table('transactions')
             ->where("DATE(transaction_date)", $today)
             ->where('status', 'COMPLETED')
@@ -23,7 +23,7 @@ class DashboardController extends BaseController
         $todaySales = array_sum(array_column($todayTx, 'total_amount'));
         $todayCount = count($todayTx);
 
-        // Data tambahan — hanya untuk admin
+        // Extra data — admin only
         $lowStock = [];
         $recentTx = [];
         $pendingCount = 0;
@@ -60,11 +60,11 @@ class DashboardController extends BaseController
         ]);
     }
 
-    /** Halaman 403 — Akses Ditolak */
+    /** 403 Page — Access Denied */
     public function forbidden()
     {
         return view('errors/403', [
-            'title' => '403 — Akses Ditolak',
+            'title' => '403 — Access Denied',
         ]);
     }
 }

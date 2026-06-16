@@ -16,7 +16,7 @@ class SupplierController extends BaseController
     public function index()
     {
         return view('suppliers/list', [
-            'title' => 'Daftar Supplier',
+            'title' => 'Supplier List',
             'suppliers' => $this->model->orderBy('name')->findAll(),
         ]);
     }
@@ -24,7 +24,7 @@ class SupplierController extends BaseController
     public function add()
     {
         return view('suppliers/add', [
-            'title' => 'Tambah Supplier',
+            'title' => 'Add Supplier',
             'validation' => \Config\Services::validation(),
         ]);
     }
@@ -44,14 +44,14 @@ class SupplierController extends BaseController
             'address' => $this->request->getPost('address') ?: null,
         ]);
 
-        return $this->withSuccess('/suppliers', 'Supplier berhasil ditambahkan!');
+        return $this->withSuccess('/suppliers', 'Supplier added successfully!');
     }
 
     public function edit(string $id)
     {
         $supplier = $this->model->find($id);
         if (!$supplier) {
-            return $this->withError('/suppliers', 'Supplier tidak ditemukan.');
+            return $this->withError('/suppliers', 'Supplier not found.');
         }
 
         return view('suppliers/edit', [
@@ -74,12 +74,12 @@ class SupplierController extends BaseController
             'address' => $this->request->getPost('address') ?: null,
         ]);
 
-        return $this->withSuccess('/suppliers', 'Supplier berhasil diperbarui!');
+        return $this->withSuccess('/suppliers', 'Supplier updated successfully!');
     }
 
     public function destroy(string $id)
     {
         $this->model->delete($id);
-        return $this->withSuccess('/suppliers', 'Supplier berhasil dihapus.');
+        return $this->withSuccess('/suppliers', 'Supplier deleted successfully.');
     }
 }

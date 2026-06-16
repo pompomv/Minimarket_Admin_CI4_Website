@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        <?= esc($title ?? '403 — Akses Ditolak') ?>
+        <?= esc($title ?? '403 — Access Denied') ?>
     </title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
@@ -71,22 +71,22 @@
             <i class="bi bi-shield-lock-fill"></i>
         </div>
         <div class="error-code">403</div>
-        <div class="error-title">Akses Ditolak</div>
+        <div class="error-title">Access Denied</div>
         <p class="error-desc">
-            Anda tidak memiliki izin untuk mengakses halaman ini.<br>
-            Halaman ini hanya bisa diakses oleh <strong>Admin</strong>.
+            You do not have permission to access this page.<br>
+            This page can only be accessed by <strong>Admin</strong>.
         </p>
         <div class="d-flex gap-2 justify-content-center">
             <a href="/dashboard" class="btn btn-primary">
-                <i class="bi bi-house me-2"></i>Kembali ke Dashboard
+                <i class="bi bi-house me-2"></i>Back to Dashboard
             </a>
             <a href="javascript:history.back()" class="btn btn-outline-secondary">
-                <i class="bi bi-arrow-left me-2"></i>Kembali
+                <i class="bi bi-arrow-left me-2"></i>Back
             </a>
         </div>
         <?php if (session()->get('role')): ?>
             <p class="mt-3 text-muted" style="font-size:.8rem">
-                Anda login sebagai: <strong>
+                You are logged in as: <strong>
                     <?= esc(session('username')) ?>
                 </strong>
                 <span class="badge bg-secondary ms-1">

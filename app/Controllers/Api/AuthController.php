@@ -47,6 +47,16 @@ class AuthController extends BaseController
                 ]);
         }
 
+        // Mobile app is restricted to cashier accounts only
+        if (strtolower($user['role']) !== 'cashier') {
+            return $this->response
+                ->setStatusCode(403)
+                ->setJSON([
+                    'status'  => 'error',
+                    'message' => 'Access denied. Admin accounts must use the web dashboard.',
+                ]);
+        }
+
         // Generate JWT token
         $token = JwtHelper::generate([
             'user_id'  => $user['id'],

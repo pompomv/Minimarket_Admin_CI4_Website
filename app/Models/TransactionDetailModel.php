@@ -24,7 +24,7 @@ class TransactionDetailModel extends Model
     public function getByTransaction(string $txId): array
     {
         return $this->db->table('transaction_details td')
-            ->select('td.*, p.name AS product_name, p.product_type')
+            ->select('td.*, p.name AS product_name')
             ->join('products p', 'p.id = td.product_id', 'left')
             ->where('td.transaction_id', $txId)
             ->get()->getResultArray();

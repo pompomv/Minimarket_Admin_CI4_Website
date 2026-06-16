@@ -11,7 +11,6 @@ class ProductModel extends Model
     protected $useAutoIncrement = true;
     protected $returnType = 'array';
     protected $allowedFields = [
-        'product_type',
         'name',
         'price',
         'stock',
@@ -29,7 +28,6 @@ class ProductModel extends Model
     protected $updatedField = 'updated_at';
 
     protected $validationRules = [
-        'product_type' => 'required|in_list[FOOD,BEVERAGE,ELECTRONIC]',
         'name' => 'required|max_length[100]',
         'price' => 'required|decimal',
         'stock' => 'required|integer',

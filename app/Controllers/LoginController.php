@@ -30,16 +30,22 @@ class LoginController extends BaseController
         $user = $this->model->findByUsername($username);
 
         if ($user && password_verify($password, $user['password'])) {
+            // Website is restricted to admin accounts only
+            if (strtolower($user['role']) !== 'admin') {
+                $session->setFlashdata('error', 'Access denied. Cashier accounts must use the mobile app.');
+                return redirect()->to('/login');
+            }
+
             $session->set([
-                'user_id' => $user['id'],
-                'username' => $user['username'],
-                'role' => strtolower($user['role']), // dinormalisasi ke lowercase
+                'user_id'   => $user['id'],
+                'username'  => $user['username'],
+                'role'      => strtolower($user['role']),
                 'logged_in' => true,
             ]);
             return redirect()->to('/dashboard');
         }
 
-        $session->setFlashdata('error', 'Username atau password salah!');
+        $session->setFlashdata('error', 'Invalid username or password!');
         return redirect()->to('/login');
     }
 

@@ -60,7 +60,7 @@
     <div class="login-card">
         <div class="brand-icon"><i class="bi bi-shop"></i></div>
         <h5 class="text-center fw-bold mb-1">Minimarket</h5>
-        <p class="text-center text-muted mb-4" style="font-size:.9rem">Silahkan login untuk melanjutkan</p>
+        <p class="text-center text-muted mb-4" style="font-size:.9rem">Admin access only — sign in to continue</p>
 
         <?php if (session()->getFlashdata('error')): ?>
             <div class="alert alert-danger py-2"><i
@@ -73,7 +73,7 @@
                 <label class="form-label fw-semibold">Username</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="bi bi-person"></i></span>
-                    <input type="text" name="username" class="form-control" placeholder="Masukkan username" required
+                    <input type="text" name="username" class="form-control" placeholder="Enter your username" required
                         autofocus value="<?= esc(old('username')) ?>">
                 </div>
             </div>
@@ -81,7 +81,7 @@
                 <label class="form-label fw-semibold">Password</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                    <input type="password" name="password" class="form-control" placeholder="Masukkan password" required
+                    <input type="password" name="password" class="form-control" placeholder="Enter your password" required
                         id="passInput">
                     <button type="button" class="btn btn-outline-secondary" onclick="togglePass()"><i class="bi bi-eye"
                             id="eyeIcon"></i></button>
@@ -94,9 +94,9 @@
         <p class="text-center mt-3 text-muted" style="font-size:.8rem">
         </p>
         <hr class="my-3">
-        <p class="text-center mb-0" style="font-size:.9rem">Belum punya akun?
-            <a href="/register" class="fw-semibold text-decoration-none">Daftar di sini</a>
-        </p>
+        <div class="alert alert-info py-2 mb-0" style="font-size:.82rem">
+            <i class="bi bi-phone me-1"></i> Cashier? Use the <strong>mobile app</strong> to log in.
+        </div>
     </div>
     <script>
         function togglePass() {

@@ -16,7 +16,7 @@ class CustomerController extends BaseController
     public function index()
     {
         return view('customers/list', [
-            'title' => 'Daftar Pelanggan',
+            'title' => 'Customer List',
             'customers' => $this->model->orderBy('name')->findAll(),
         ]);
     }
@@ -24,7 +24,7 @@ class CustomerController extends BaseController
     public function add()
     {
         return view('customers/add', [
-            'title' => 'Tambah Pelanggan',
+            'title' => 'Add Customer',
             'validation' => \Config\Services::validation(),
         ]);
     }
@@ -44,18 +44,18 @@ class CustomerController extends BaseController
             'address' => $this->request->getPost('address') ?: null,
         ]);
 
-        return $this->withSuccess('/customers', 'Pelanggan berhasil ditambahkan!');
+        return $this->withSuccess('/customers', 'Customer added successfully!');
     }
 
     public function edit(string $id)
     {
         $customer = $this->model->find($id);
         if (!$customer) {
-            return $this->withError('/customers', 'Pelanggan tidak ditemukan.');
+            return $this->withError('/customers', 'Customer not found.');
         }
 
         return view('customers/edit', [
-            'title' => 'Edit Pelanggan',
+            'title' => 'Edit Customer',
             'customer' => $customer,
             'validation' => \Config\Services::validation(),
         ]);
@@ -74,12 +74,12 @@ class CustomerController extends BaseController
             'address' => $this->request->getPost('address') ?: null,
         ]);
 
-        return $this->withSuccess('/customers', 'Pelanggan berhasil diperbarui!');
+        return $this->withSuccess('/customers', 'Customer updated successfully!');
     }
 
     public function destroy(string $id)
     {
         $this->model->delete($id);
-        return $this->withSuccess('/customers', 'Pelanggan berhasil dihapus.');
+        return $this->withSuccess('/customers', 'Customer deleted successfully.');
     }
 }

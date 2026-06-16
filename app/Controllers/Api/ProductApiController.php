@@ -37,7 +37,7 @@ class ProductApiController extends BaseController
         }
 
         if (!empty($category)) {
-            $builder->where('p.product_type', strtoupper($category));
+            $builder->where('p.category', $category);
         }
 
         $products = $builder->get()->getResultArray();

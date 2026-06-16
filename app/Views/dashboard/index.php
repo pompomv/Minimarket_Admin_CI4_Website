@@ -15,9 +15,9 @@
             <div class="card-body d-flex align-items-center gap-3">
                 <div class="stat-icon" style="background:#dbeafe; color:#2563eb;"><i class="bi bi-cash-stack"></i></div>
                 <div>
-                    <div class="text-muted" style="font-size:.8rem">Penjualan Hari Ini</div>
+                    <div class="text-muted" style="font-size:.8rem">Today's Sales</div>
                     <div class="fw-bold fs-5">Rp <?= number_format($todaySales, 0, ',', '.') ?></div>
-                    <div class="text-muted" style="font-size:.78rem"><?= $todayCount ?> transaksi</div>
+                    <div class="text-muted" style="font-size:.78rem"><?= $todayCount ?> transactions</div>
                 </div>
             </div>
         </div>
@@ -27,9 +27,9 @@
             <div class="card-body d-flex align-items-center gap-3">
                 <div class="stat-icon" style="background:#dcfce7; color:#16a34a;"><i class="bi bi-box-seam"></i></div>
                 <div>
-                    <div class="text-muted" style="font-size:.8rem">Total Produk</div>
+                    <div class="text-muted" style="font-size:.8rem">Total Products</div>
                     <div class="fw-bold fs-5"><?= $totalProducts ?></div>
-                    <div class="text-muted" style="font-size:.78rem">item terdaftar</div>
+                    <div class="text-muted" style="font-size:.78rem">registered items</div>
                 </div>
             </div>
         </div>
@@ -39,9 +39,9 @@
             <div class="card-body d-flex align-items-center gap-3">
                 <div class="stat-icon" style="background:#fef3c7; color:#d97706;"><i class="bi bi-people"></i></div>
                 <div>
-                    <div class="text-muted" style="font-size:.8rem">Total Pelanggan</div>
+                    <div class="text-muted" style="font-size:.8rem">Total Customers</div>
                     <div class="fw-bold fs-5"><?= $totalCustomers ?></div>
-                    <div class="text-muted" style="font-size:.78rem">pelanggan terdaftar</div>
+                    <div class="text-muted" style="font-size:.78rem">registered customers</div>
                 </div>
             </div>
         </div>
@@ -51,9 +51,9 @@
             <div class="card-body d-flex align-items-center gap-3">
                 <div class="stat-icon" style="background:#fee2e2; color:#dc2626;"><i class="bi bi-hourglass-split"></i></div>
                 <div>
-                    <div class="text-muted" style="font-size:.8rem">Transaksi Pending</div>
+                    <div class="text-muted" style="font-size:.8rem">Pending Transactions</div>
                     <div class="fw-bold fs-5"><?= $pendingCount ?></div>
-                    <div class="text-muted" style="font-size:.78rem">belum selesai</div>
+                    <div class="text-muted" style="font-size:.78rem">not yet completed</div>
                 </div>
             </div>
         </div>
@@ -65,14 +65,14 @@
     <div class="col-lg-7">
         <div class="table-card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <span><i class="bi bi-receipt me-2"></i>Transaksi Terbaru</span>
-                <a href="/transactions" class="btn btn-sm btn-outline-primary">Lihat Semua</a>
+                <span><i class="bi bi-receipt me-2"></i>Recent Transactions</span>
+                <a href="/transactions" class="btn btn-sm btn-outline-primary">View All</a>
             </div>
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0">
                     <thead>
                         <tr>
-                            <th>ID</th><th>Pelanggan</th><th>Total</th><th>Status</th><th>Tanggal</th>
+                            <th>ID</th><th>Customer</th><th>Total</th><th>Status</th><th>Date</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -88,7 +88,7 @@
                         </tr>
                         <?php endforeach; ?>
                         <?php if (empty($recentTx)): ?>
-                            <tr><td colspan="5" class="text-center text-muted py-4">Belum ada transaksi</td></tr>
+                            <tr><td colspan="5" class="text-center text-muted py-4">No transactions yet</td></tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
@@ -100,24 +100,23 @@
     <div class="col-lg-5">
         <div class="table-card h-100">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <span><i class="bi bi-exclamation-triangle text-warning me-2"></i>Stok Rendah</span>
-                <a href="/products" class="btn btn-sm btn-outline-warning">Kelola</a>
+                <span><i class="bi bi-exclamation-triangle text-warning me-2"></i>Low Stock</span>
+                <a href="/products" class="btn btn-sm btn-outline-warning">Manage</a>
             </div>
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0">
-                    <thead><tr><th>Produk</th><th>Tipe</th><th>Stok</th></tr></thead>
+                    <thead><tr><th>Product</th><th>Type</th><th>Stock</th></tr></thead>
                     <tbody>
                         <?php foreach ($lowStock as $p): ?>
                         <tr>
                             <td><?= esc($p['name']) ?></td>
-                            <td><span class="badge badge-<?= strtolower($p['product_type'] ?? $p['category'] ?? 'other') ?>"><?= esc($p['product_type'] ?? $p['category'] ?? 'N/A') ?></span></td>
                             <td>
                                 <span class="fw-bold <?= $p['stock'] == 0 ? 'text-danger' : 'text-warning' ?>"><?= $p['stock'] ?></span>
                             </td>
                         </tr>
                         <?php endforeach; ?>
                         <?php if (empty($lowStock)): ?>
-                            <tr><td colspan="3" class="text-center text-muted py-4">Semua stok aman ✓</td></tr>
+                            <tr><td colspan="3" class="text-center text-muted py-4">All stock levels are safe ✓</td></tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
@@ -131,10 +130,10 @@
     <div class="col-12">
         <div class="card stat-card">
             <div class="card-body d-flex gap-2 flex-wrap">
-                <a href="/transactions/create" class="btn btn-primary"><i class="bi bi-cart-plus me-2"></i>Transaksi Baru</a>
-                <a href="/products/add" class="btn btn-outline-success"><i class="bi bi-plus-circle me-2"></i>Tambah Produk</a>
-                <a href="/customers/add" class="btn btn-outline-info"><i class="bi bi-person-plus me-2"></i>Tambah Pelanggan</a>
-                <a href="/reports" class="btn btn-outline-secondary"><i class="bi bi-bar-chart me-2"></i>Lihat Laporan</a>
+                <a href="/transactions/create" class="btn btn-primary"><i class="bi bi-cart-plus me-2"></i>New Transaction</a>
+                <a href="/products/add" class="btn btn-outline-success"><i class="bi bi-plus-circle me-2"></i>Add Product</a>
+                <a href="/customers/add" class="btn btn-outline-info"><i class="bi bi-person-plus me-2"></i>Add Customer</a>
+                <a href="/reports" class="btn btn-outline-secondary"><i class="bi bi-bar-chart me-2"></i>View Reports</a>
             </div>
         </div>
     </div>
@@ -154,9 +153,9 @@
                     <i class="bi bi-cash-stack"></i>
                 </div>
                 <div>
-                    <div class="text-muted" style="font-size:.85rem">Penjualan Saya Hari Ini</div>
+                    <div class="text-muted" style="font-size:.85rem">My Sales Today</div>
                     <div class="fw-bold" style="font-size:1.6rem">Rp <?= number_format($todaySales, 0, ',', '.') ?></div>
-                    <div class="text-muted" style="font-size:.82rem"><?= $todayCount ?> transaksi selesai</div>
+                    <div class="text-muted" style="font-size:.82rem"><?= $todayCount ?> completed transactions</div>
                 </div>
             </div>
         </div>
@@ -168,9 +167,9 @@
                     <i class="bi bi-receipt-cutoff"></i>
                 </div>
                 <div>
-                    <div class="text-muted" style="font-size:.85rem">Jumlah Transaksi</div>
+                    <div class="text-muted" style="font-size:.85rem">Total Transactions</div>
                     <div class="fw-bold" style="font-size:1.6rem"><?= $todayCount ?></div>
-                    <div class="text-muted" style="font-size:.82rem">hari ini</div>
+                    <div class="text-muted" style="font-size:.82rem">today</div>
                 </div>
             </div>
         </div>
@@ -182,7 +181,7 @@
     <div class="col-12">
         <div class="alert alert-info d-flex align-items-center gap-2 mb-0" role="alert">
             <i class="bi bi-info-circle-fill fs-5"></i>
-            <span>Selamat datang, <strong><?= esc(session('username')) ?></strong>! Gunakan menu <strong>Kasir / POS</strong> untuk memulai transaksi baru.</span>
+            <span>Welcome, <strong><?= esc(session('username')) ?></strong>! Use the <strong>Cashier / POS</strong> menu to start a new transaction.</span>
         </div>
     </div>
 </div>
@@ -192,9 +191,9 @@
     <div class="col-12">
         <div class="card stat-card">
             <div class="card-body d-flex gap-2 flex-wrap">
-                <a href="/transactions/create" class="btn btn-primary btn-lg"><i class="bi bi-cart-plus me-2"></i>Transaksi Baru</a>
-                <a href="/transactions" class="btn btn-outline-secondary"><i class="bi bi-receipt me-2"></i>Lihat Transaksi</a>
-                <a href="/customers/add" class="btn btn-outline-info"><i class="bi bi-person-plus me-2"></i>Daftarkan Pelanggan</a>
+                <a href="/transactions/create" class="btn btn-primary btn-lg"><i class="bi bi-cart-plus me-2"></i>New Transaction</a>
+                <a href="/transactions" class="btn btn-outline-secondary"><i class="bi bi-receipt me-2"></i>View Transactions</a>
+                <a href="/customers/add" class="btn btn-outline-info"><i class="bi bi-person-plus me-2"></i>Register Customer</a>
             </div>
         </div>
     </div>

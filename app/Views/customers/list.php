@@ -4,17 +4,17 @@
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <div></div>
-    <a href="/customers/add" class="btn btn-primary"><i class="bi bi-person-plus me-2"></i>Tambah Pelanggan</a>
+    <a href="/customers/add" class="btn btn-primary"><i class="bi bi-person-plus me-2"></i>Add Customer</a>
 </div>
 
 <div class="table-card">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <span><i class="bi bi-people me-2"></i>Daftar Pelanggan (<?= count($customers) ?>)</span>
-        <input type="text" id="searchBox" class="form-control form-control-sm w-auto" placeholder="Cari pelanggan…" style="min-width:200px">
+        <span><i class="bi bi-people me-2"></i>Customer List (<?= count($customers) ?>)</span>
+        <input type="text" id="searchBox" class="form-control form-control-sm w-auto" placeholder="Search customers…" style="min-width:200px">
     </div>
     <div class="table-responsive">
         <table class="table table-hover align-middle mb-0" id="custTable">
-            <thead><tr><th>#</th><th>Nama</th><th>No. HP</th><th>Email</th><th>Alamat</th><th>Aksi</th></tr></thead>
+            <thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Email</th><th>Address</th><th>Actions</th></tr></thead>
             <tbody>
                 <?php foreach ($customers as $i => $c): ?>
                 <tr>
@@ -26,12 +26,12 @@
                     <td>
                         <a href="/customers/edit/<?= esc($c['id']) ?>" class="btn btn-sm btn-outline-warning py-0"><i class="bi bi-pencil"></i></a>
                         <a href="/customers/destroy/<?= esc($c['id']) ?>" class="btn btn-sm btn-outline-danger py-0"
-                           onclick="return confirm('Hapus pelanggan ini?')"><i class="bi bi-trash"></i></a>
+                           onclick="return confirm('Delete this customer?')"><i class="bi bi-trash"></i></a>
                     </td>
                 </tr>
                 <?php endforeach; ?>
                 <?php if (empty($customers)): ?>
-                    <tr><td colspan="6" class="text-center text-muted py-5">Belum ada pelanggan.</td></tr>
+                    <tr><td colspan="6" class="text-center text-muted py-5">No customers found.</td></tr>
                 <?php endif; ?>
             </tbody>
         </table>

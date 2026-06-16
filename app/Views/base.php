@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -172,6 +172,11 @@
             border-bottom: 2px solid #e2e8f0;
         }
 
+        .badge {
+            background-color: #e2e8f0;
+            color: #475569;
+        }
+
         .badge-food {
             background: #dcfce7;
             color: #166534;
@@ -237,32 +242,32 @@
             Mini<span>Market</span>
         </a>
         <div class="sidebar-nav">
-            <div class="nav-section">Utama</div>
+            <div class="nav-section">Main</div>
             <a href="/dashboard" class="nav-link <?= ($activePage ?? '') === 'dashboard' ? 'active' : '' ?>"><i
                     class="bi bi-speedometer2"></i> Dashboard</a>
             <a href="/transactions" class="nav-link <?= ($activePage ?? '') === 'transactions' ? 'active' : '' ?>"><i
-                    class="bi bi-receipt"></i> Transaksi</a>
+                    class="bi bi-receipt"></i> Transactions</a>
             <a href="/transactions/create" class="nav-link <?= ($activePage ?? '') === 'pos' ? 'active' : '' ?>">
-                <i class="bi bi-cart-plus-fill"></i> Kasir
+                <i class="bi bi-cart-plus-fill"></i> Cashier
             </a>
 
             <div class="nav-section">Master Data</div>
             <?php if (session('role') === 'admin'): ?>
                 <a href="/products" class="nav-link <?= ($activePage ?? '') === 'products' ? 'active' : '' ?>"><i
-                        class="bi bi-box-seam"></i> Produk</a>
+                        class="bi bi-box-seam"></i> Products</a>
             <?php endif; ?>
             <a href="/customers" class="nav-link <?= ($activePage ?? '') === 'customers' ? 'active' : '' ?>"><i
-                    class="bi bi-people"></i> Pelanggan</a>
+                    class="bi bi-people"></i> Customers</a>
             <?php if (session('role') === 'admin'): ?>
                 <a href="/suppliers" class="nav-link <?= ($activePage ?? '') === 'suppliers' ? 'active' : '' ?>"><i
-                        class="bi bi-truck"></i> Supplier</a>
+                        class="bi bi-truck"></i> Suppliers</a>
 
-                <div class="nav-section">Laporan</div>
+                <div class="nav-section">Reports</div>
                 <a href="/reports" class="nav-link <?= ($activePage ?? '') === 'reports' ? 'active' : '' ?>"><i
-                        class="bi bi-bar-chart-line"></i> Laporan</a>
+                        class="bi bi-bar-chart-line"></i> Reports</a>
             <?php endif; ?>
 
-            <div class="nav-section">Akun</div>
+            <div class="nav-section">Account</div>
             <a href="/logout" class="nav-link" style="color:#fca5a5;" onmouseover="this.style.color='#f87171'"
                 onmouseout="this.style.color='#fca5a5'"><i class="bi bi-box-arrow-left"></i> Logout</a>
         </div>
@@ -303,7 +308,7 @@
             <?php endif; ?>
             <?php if (session()->getFlashdata('errors')): ?>
                 <div class="alert alert-danger alert-dismissible fade show">
-                    <i class="bi bi-exclamation-triangle me-2"></i><strong>Terdapat kesalahan:</strong>
+                    <i class="bi bi-exclamation-triangle me-2"></i><strong>The following errors occurred:</strong>
                     <ul class="mb-0 mt-1">
                         <?php foreach ((array) session()->getFlashdata('errors') as $err): ?>
                             <li><?= esc($err) ?></li>

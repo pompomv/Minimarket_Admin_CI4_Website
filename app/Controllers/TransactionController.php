@@ -26,7 +26,7 @@ class TransactionController extends BaseController
     public function index()
     {
         return view('transactions/list', [
-            'title' => 'Daftar Transaksi',
+            'title' => 'Transaction List',
             'transactions' => $this->model->withCustomer(),
         ]);
     }
@@ -35,7 +35,7 @@ class TransactionController extends BaseController
     public function create()
     {
         return view('transactions/create', [
-            'title' => 'Transaksi Baru',
+            'title' => 'New Transaction',
             'customers' => $this->customerModel->orderBy('name')->findAll(),
             'products' => $this->productModel->withSupplier(),
         ]);
@@ -50,22 +50,26 @@ class TransactionController extends BaseController
         $quantities = $this->request->getPost('quantity');
 
         if (empty($productIds)) {
-            return redirect()->back()->with('error', 'Pilih minimal satu produk!');
+            return redirect()->back()->with('error', 'Please select at least one product!');
         }
 
         $db = \Config\Database::connect();
         $db->transStart();
 
         // Create transaction header
-        $txId = generate_uuid();
+        $randomStr = strtoupper(substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 4));
+        $invoiceNo = 'INV-' . date('Ymd') . '-' . $randomStr;
         $this->model->insert([
-            'id' => $txId,
+            'invoice_no' => $invoiceNo,
             'transaction_date' => date('Y-m-d H:i:s'),
             'customer_id' => $this->request->getPost('customer_id') ?: null,
+            'user_id' => session()->get('user_id'),
             'status' => 'PENDING',
             'notes' => $this->request->getPost('notes'),
             'total_amount' => 0,
         ]);
+
+        $txId = $this->model->getInsertID();
 
         // Insert each detail line
         foreach ($productIds as $i => $pid) {
@@ -79,7 +83,7 @@ class TransactionController extends BaseController
 
             if ($product['stock'] < $qty) {
                 $db->transRollback();
-                return redirect()->back()->with('error', "Stok {$product['name']} tidak cukup! (tersisa {$product['stock']})");
+                return redirect()->back()->with('error', "Insufficient stock for {$product['name']}! (only {$product['stock']} left)");
             }
 
             $unit = (float) $product['price'];
@@ -89,7 +93,7 @@ class TransactionController extends BaseController
                 'transaction_id' => $txId,
                 'product_id' => $pid,
                 'quantity' => $qty,
-                'unit_price' => $unit,
+                'price' => $unit,
                 'subtotal' => $subtotal,
             ]);
 
@@ -103,10 +107,10 @@ class TransactionController extends BaseController
         $db->transComplete();
 
         if ($db->transStatus() === false) {
-            return redirect()->back()->with('error', 'Transaksi gagal disimpan, coba lagi.');
+            return redirect()->back()->with('error', 'Transaction failed to save, please try again.');
         }
 
-        return redirect()->to('/transactions/detail/' . $txId)->with('success', 'Transaksi berhasil disimpan!');
+        return redirect()->to('/transactions/detail/' . $txId)->with('success', 'Transaction saved successfully!');
     }
 
     /** Show transaction detail */
@@ -114,11 +118,11 @@ class TransactionController extends BaseController
     {
         $transaction = $this->model->getWithCustomer($id);
         if (!$transaction) {
-            return $this->withError('/transactions', 'Transaksi tidak ditemukan.');
+            return $this->withError('/transactions', 'Transaction not found.');
         }
 
         return view('transactions/detail', [
-            'title' => 'Detail Transaksi',
+            'title' => 'Transaction Detail',
             'transaction' => $transaction,
             'details' => $this->detailModel->getByTransaction($id),
         ]);
@@ -129,7 +133,7 @@ class TransactionController extends BaseController
     {
         $transaction = $this->model->find($id);
         if (!$transaction || $transaction['status'] !== 'PENDING') {
-            return $this->withError('/transactions', 'Transaksi tidak bisa dibatalkan.');
+            return $this->withError('/transactions', 'Transaction cannot be cancelled.');
         }
 
         $details = $this->detailModel->getByTransaction($id);
@@ -141,6 +145,6 @@ class TransactionController extends BaseController
         }
 
         $this->model->update($id, ['status' => 'CANCELLED']);
-        return $this->withSuccess('/transactions', 'Transaksi dibatalkan dan stok dikembalikan.');
+        return $this->withSuccess('/transactions', 'Transaction cancelled and stock restored.');
     }
 }

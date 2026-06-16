@@ -3,7 +3,7 @@
 <?php $activePage = 'pos'; ?>
 
 <div class="mb-3"><a href="/transactions" class="btn btn-sm btn-outline-secondary"><i
-            class="bi bi-arrow-left me-1"></i>Kembali</a></div>
+            class="bi bi-arrow-left me-1"></i>Back</a></div>
 
 <form action="/transactions/store" method="POST" id="posForm">
     <?= csrf_field() ?>
@@ -12,18 +12,18 @@
         <div class="col-lg-7">
             <div class="table-card">
                 <div class="card-header d-flex gap-2 align-items-center">
-                    <i class="bi bi-cart3"></i><span class="fw-semibold">Pilih Produk</span>
+                    <i class="bi bi-cart3"></i><span class="fw-semibold">Select Product</span>
                     <input type="text" id="prodSearch" class="form-control form-control-sm ms-auto"
-                        placeholder="Cari produk…" style="max-width:200px">
+                        placeholder="Search products…" style="max-width:200px">
                 </div>
                 <div class="table-responsive" style="max-height:450px; overflow-y:auto;">
                     <table class="table table-hover align-middle mb-0" id="prodTable">
                         <thead class="sticky-top">
                             <tr>
-                                <th>Produk</th>
-                                <th>Tipe</th>
-                                <th>Harga</th>
-                                <th>Stok</th>
+                                <th>Product</th>
+
+                                <th>Price</th>
+                                <th>Stock</th>
                                 <th>Qty</th>
                             </tr>
                         </thead>
@@ -39,9 +39,7 @@
                                         </div>
                                         <input type="hidden" name="product_id[]" value="<?= $p['id'] ?>">
                                     </td>
-                                    <td><span class="badge badge-<?= strtolower($p['product_type']) ?>">
-                                            <?= $p['product_type'] ?>
-                                        </span></td>
+
                                     <td class="small">Rp
                                         <?= number_format($p['price'], 0, ',', '.') ?>
                                     </td>
@@ -65,11 +63,11 @@
         <!-- Right: Order summary -->
         <div class="col-lg-5">
             <div class="form-card mb-3">
-                <h6 class="fw-bold mb-3"><i class="bi bi-receipt me-2"></i>Ringkasan Pesanan</h6>
+                <h6 class="fw-bold mb-3"><i class="bi bi-receipt me-2"></i>Order Summary</h6>
                 <div class="mb-3">
-                    <label class="form-label fw-semibold">Pelanggan</label>
+                    <label class="form-label fw-semibold">Customer</label>
                     <select name="customer_id" class="form-select form-select-sm">
-                        <option value="">— Walk-in / Umum —</option>
+                        <option value="">— Walk-in / General —</option>
                         <?php foreach ($customers as $c): ?>
                             <option value="<?= esc($c['id']) ?>">
                                 <?= esc($c['name']) ?>
@@ -78,18 +76,18 @@
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label fw-semibold">Catatan</label>
-                    <input type="text" name="notes" class="form-control form-control-sm" placeholder="Opsional…">
+                    <label class="form-label fw-semibold">Notes</label>
+                    <input type="text" name="notes" class="form-control form-control-sm" placeholder="Optional…">
                 </div>
                 <hr>
-                <div id="orderItems" class="mb-2 small text-muted">Belum ada item dipilih.</div>
+                <div id="orderItems" class="mb-2 small text-muted">No items selected yet.</div>
                 <hr>
                 <div class="d-flex justify-content-between fw-bold fs-5">
                     <span>Total</span>
                     <span id="grandTotal">Rp 0</span>
                 </div>
                 <button type="submit" class="btn btn-success w-100 mt-3 py-2 fw-semibold">
-                    <i class="bi bi-check-circle me-2"></i>Selesaikan Transaksi
+                    <i class="bi bi-check-circle me-2"></i>Complete Transaction
                 </button>
             </div>
         </div>
@@ -118,7 +116,7 @@
             </div>`;
             }
         });
-        document.getElementById('orderItems').innerHTML = html || '<span class="text-muted">Belum ada item dipilih.</span>';
+        document.getElementById('orderItems').innerHTML = html || '<span class="text-muted">No items selected yet.</span>';
         document.getElementById('grandTotal').textContent = rupiah(total);
     }
 
@@ -136,7 +134,7 @@
 
     document.getElementById('posForm').addEventListener('submit', function (e) {
         const anyQty = [...document.querySelectorAll('.qty-input')].some(i => parseInt(i.value) > 0);
-        if (!anyQty) { e.preventDefault(); alert('Pilih minimal satu produk dengan qty > 0!'); }
+        if (!anyQty) { e.preventDefault(); alert('Select at least one product with qty > 0!'); }
     });
 </script>
 <?= $this->endSection() ?>
